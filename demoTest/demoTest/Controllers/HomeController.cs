@@ -15,14 +15,14 @@ namespace demoTest.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            //var user = webTestEntities.Users.ToList();
-            var userResult = webTestEntities.GetUserNew(); // GetUserNew_Result
-            var user = userResult.Select(s => new User
-            {
-                Email = s.Email,
-                Password = s.Password,
-                Id = s.Id
-            }).ToList();
+            var user = webTestEntities.Users.ToList();
+            //var userResult = webTestEntities.GetUserNew(); // GetUserNew_Result
+            //var user = userResult.Select(s => new User
+            //{
+            //    Email = s.Email,
+            //    Password = s.Password,
+            //    Id = s.Id,
+            //}).ToList();
             return View(user); //User
         }
 

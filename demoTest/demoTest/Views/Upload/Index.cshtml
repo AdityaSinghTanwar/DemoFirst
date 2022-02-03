@@ -1,0 +1,38 @@
+﻿@using demoTest.Models;
+@model User
+@{
+    ViewBag.Title = "Index";
+}
+<div class="mar-top">
+    @using (Html.BeginForm("Index", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            @Html.Label("FileUpload")
+            @Html.TextBox("FileUpload", null, new { @class = "form-control", type = "file" })
+        </div>
+        <div class="form-group">
+            @Html.Label("FileUploads")
+            @Html.TextBox("FileUploads", null, new { @class = "form-control", type = "file", multiple = "" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(m => m.ImageFile)
+                @Html.TextBoxFor(m => m.ImageFile, new { @class = "form-control", type = "file" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ImageFiles)
+                @Html.TextBoxFor(m => m.ImageFiles, new { @class = "form-control", type = "file", multiple = "" })
+            </div>*@
+        <input class="btn btn-primary" type="submit" value="Save" />
+        @Html.ActionLink("Cancel", "Index", "Home", new { @class = "btn btn-default" })
+    }
+</div>
+

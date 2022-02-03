@@ -9,6 +9,8 @@
                 <th>S. no.</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Image</th>
+                <th>OtherFiles</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -22,6 +24,8 @@
                         <td>@count</td>
                         <td>@user.Email</td>
                         <td>@user.Password</td>
+                        <td>@user.Image</td>
+                        <td>@user.OtherFiles</td>
                         <td>@Html.ActionLink("Delete", "Delete", "Home", new { id = user.Id }, null)</td>
                     </tr>
                 }
