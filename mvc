@@ -1,0 +1,156 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using filesupload.Models;
+using System.IO;
+
+namespace filesupload.Controllers
+{
+    public class HomeController : Controller
+    {
+        UploadEntities UploadEntities = new UploadEntities();
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult Demo()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Demo(Candidate candidate, HttpPostedFileBase fileupload, List<HttpPostedFileBase> fileuploads)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+           /* if (fileupload == null &&  fileuploads == null)
+            {
+                return View();
+            } */
+           
+            var fileName = Path.GetFileName(Request.Files[0].FileName);
+            var path = Path.Combine(Server.MapPath("~/App_Data"), fileName);
+            fileupload = Request.Files[0];
+            fileupload.SaveAs(path);
+
+            var fileNames = new List<string>();
+            if (fileuploads.Count > 0)
+            {
+                foreach (var file in fileuploads)
+                {
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileNameNew = Path.GetFileName(Request.Files[0].FileName);
+                        var pathNew = Path.Combine(Server.MapPath("~/App_Data"), fileName);
+                        fileupload = Request.Files[0];
+                        fileupload.SaveAs(pathNew);
+
+                        fileNames.Add(fileNameNew);
+                    }
+                }
+            }
+            candidate.Resume = fileName;
+            if (fileNames.Count > 0)
+                candidate.Resume = string.Join(" , ", fileNames);
+            UploadEntities.Candidates.Add(candidate);
+            UploadEntities.SaveChanges();
+            return View();
+        }
+    }
+}
+
+
+
+
+
+@model filesupload.Models.Candidate
+@{
+    ViewBag.Title = "Home page";
+}
+
+
+<h2>Demo</h2>
+
+<div>
+    @using (Html.BeginForm("Demo", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <br />
+        <table>
+            <thead>
+                <tr>
+                    <td> Dot net Developer</td>
+                </tr>
+            </thead>
+            <tr><td> Please fill <span style="color:red">(*)</span> out below fields and click Apply for this position </td></tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.First_Name)<b style="color:red">*</b></td>
+                <td>
+                    @Html.TextBoxFor(m => m.First_Name, new { maxlenght = 25 })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Last_Name)<b style="color:red">*</b>
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Last_Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Position)<b style="color:red">*</b>
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Position)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Skills)<b style="color:red">*</b>
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Skills)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.EmailID)<b style="color:red">*</b>
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.EmailID, new { @type = "email" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.ContactNO)<b style="color:red">*</b>
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.ContactNO, new { @type = "number" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Resume)<b style="color:red">*</b>
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Resume, new { @type = "file", multiple = "" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" id="Apply" value=" Apply" />
+                </td>
+            </tr>
+        </table>
+
+    }
+</div>
+
